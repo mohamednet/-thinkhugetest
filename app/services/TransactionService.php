@@ -33,6 +33,47 @@ class TransactionService
         return $this->transactionRepository->getTotalByType(Transaction::TYPE_EXPENSE);
     }
     
+    /**
+     * Get transactions filtered by client ID and date range
+     * 
+     * @param int|null $clientId Client ID to filter by (optional)
+     * @param string|null $startDate Start date in Y-m-d format (optional)
+     * @param string|null $endDate End date in Y-m-d format (optional)
+     * @return array Array of Transaction objects
+     */
+    public function getFilteredTransactions($clientId = null, $startDate = null, $endDate = null)
+    {
+        // Build SQL query and parameters based on filters
+        $sql = "SELECT * FROM transactions WHERE 1=1";
+        $params = [];
+        
+        // Filter by client ID if provided
+        if ($clientId) {
+            $sql .= " AND client_id = ?";
+            $params[] = $clientId;
+        }
+        
+        // Filter by date range if provided
+        if ($startDate && $endDate) {
+            $sql .= " AND date BETWEEN ? AND ?";
+            $params[] = $startDate;
+            $params[] = $endDate;
+        } else if ($startDate) {
+            $sql .= " AND date >= ?";
+            $params[] = $startDate;
+        } else if ($endDate) {
+            $sql .= " AND date <= ?";
+            $params[] = $endDate;
+        }
+        
+        // Order by date descending
+        $sql .= " ORDER BY date DESC";
+        
+        // Execute query and map results to Transaction objects
+        $rows = $this->transactionRepository->getDb()->fetchAll($sql, $params);
+        return array_map([$this->transactionRepository->getMapper(), 'toModel'], $rows);
+    }
+    
     public function getRecentTransactions($limit = 5)
     {
         $transactions = $this->transactionRepository->findRecent($limit);

@@ -3,6 +3,10 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+// Include core files to access helper functions
+define('APP_ROOT', dirname(__DIR__));
+require_once APP_ROOT . '/app/core/helpers.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,10 +28,10 @@ error_reporting(E_ALL);
             <h2>Direct Links</h2>
             <p>These links test direct access to routes:</p>
             <ul class="list-group">
-                <li class="list-group-item"><a href="/testv1thinkhug/" target="_blank">Home (Root)</a></li>
-                <li class="list-group-item"><a href="/testv1thinkhug/login" target="_blank">Login</a></li>
-                <li class="list-group-item"><a href="/testv1thinkhug/clients" target="_blank">Clients</a></li>
-                <li class="list-group-item"><a href="/testv1thinkhug/reports" target="_blank">Reports</a></li>
+                <li class="list-group-item"><a href="<?= url('') ?>" target="_blank">Home (Root)</a></li>
+                <li class="list-group-item"><a href="<?= url('login') ?>" target="_blank">Login</a></li>
+                <li class="list-group-item"><a href="<?= url('clients') ?>" target="_blank">Clients</a></li>
+                <li class="list-group-item"><a href="<?= url('reports') ?>" target="_blank">Reports</a></li>
             </ul>
         </div>
         
@@ -35,9 +39,9 @@ error_reporting(E_ALL);
             <h2>Subdirectory Links</h2>
             <p>These links test access through the public subdirectory:</p>
             <ul class="list-group">
-                <li class="list-group-item"><a href="/testv1thinkhug/public/" target="_blank">Home (through public)</a></li>
-                <li class="list-group-item"><a href="/testv1thinkhug/public/login" target="_blank">Login (through public)</a></li>
-                <li class="list-group-item"><a href="/testv1thinkhug/public/clients" target="_blank">Clients (through public)</a></li>
+                <li class="list-group-item"><a href="<?= url('') ?>" target="_blank">Home (through public)</a></li>
+                <li class="list-group-item"><a href="<?= url('login') ?>" target="_blank">Login (through public)</a></li>
+                <li class="list-group-item"><a href="<?= url('clients') ?>" target="_blank">Clients (through public)</a></li>
             </ul>
         </div>
         
@@ -45,8 +49,8 @@ error_reporting(E_ALL);
             <h2>Dynamic Route Links</h2>
             <p>These links test dynamic routes (you may need to adjust IDs):</p>
             <ul class="list-group">
-                <li class="list-group-item"><a href="/testv1thinkhug/clients/1/transactions" target="_blank">Client 1 Transactions</a></li>
-                <li class="list-group-item"><a href="/testv1thinkhug/clients/1/transactions/create" target="_blank">Create Transaction for Client 1</a></li>
+                <li class="list-group-item"><a href="<?= url('clients/1/transactions') ?>" target="_blank">Client 1 Transactions</a></li>
+                <li class="list-group-item"><a href="<?= url('clients/1/transactions/create') ?>" target="_blank">Create Transaction for Client 1</a></li>
             </ul>
         </div>
         

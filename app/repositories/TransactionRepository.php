@@ -17,6 +17,26 @@ class TransactionRepository implements TransactionRepositoryInterface
         $this->mapper = new TransactionMapper();
     }
     
+    /**
+     * Get the database instance
+     * 
+     * @return Database
+     */
+    public function getDb()
+    {
+        return $this->db;
+    }
+    
+    /**
+     * Get the mapper instance
+     * 
+     * @return TransactionMapper
+     */
+    public function getMapper()
+    {
+        return $this->mapper;
+    }
+    
     public function findAll()
     {
         $rows = $this->db->fetchAll("SELECT * FROM transactions ORDER BY date DESC");

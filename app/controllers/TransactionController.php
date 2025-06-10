@@ -139,7 +139,7 @@ class TransactionController extends Controller
             ];
             
             // Update transaction
-            $this->transactionService->updateTransaction($data);
+            $this->transactionService->updateTransaction($id, $data);
             
             flash('success', 'Transaction updated successfully');
             return $this->redirect(url('clients/' . $transaction->client_id . '/transactions'));

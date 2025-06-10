@@ -15,7 +15,7 @@ ob_start();
             <div class="card-body">
                 <h5 class="card-title">Clients</h5>
                 <p class="card-text">Manage your clients and their information.</p>
-                <a href="/clients" class="btn btn-primary">View Clients</a>
+                <a href="<?= url('clients') ?>" class="btn btn-primary">View Clients</a>
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@ ob_start();
             <div class="card-body">
                 <h5 class="card-title">Transactions</h5>
                 <p class="card-text">Add and manage client transactions.</p>
-                <a href="/clients" class="btn btn-primary">Select Client</a>
+                <a href="<?= url('clients') ?>" class="btn btn-primary">Select Client</a>
             </div>
         </div>
     </div>
@@ -35,7 +35,7 @@ ob_start();
             <div class="card-body">
                 <h5 class="card-title">Reports</h5>
                 <p class="card-text">View financial reports and statistics.</p>
-                <a href="/reports" class="btn btn-primary">View Reports</a>
+                <a href="<?= url('reports') ?>" class="btn btn-primary">View Reports</a>
             </div>
         </div>
     </div>

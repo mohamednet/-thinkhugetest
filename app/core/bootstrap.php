@@ -38,6 +38,7 @@ require_once APP_ROOT . '/app/core/helpers.php';
 date_default_timezone_set('UTC');
 
 // Configure session for subdirectory environment
+// Use a fixed session path to ensure consistency
 $session_path = '/testv1thinkhug';
 
 // Set session cookie parameters to work with subdirectory

@@ -1,4 +1,10 @@
 <?php
+// Define APP_ROOT constant
+define('APP_ROOT', __DIR__);
+
+// Include helper functions
+require_once APP_ROOT . '/app/core/helpers.php';
+
 // Start session
 session_start();
 
@@ -31,7 +37,7 @@ echo "<p>Current CSRF token: " . $_SESSION['csrf_token'] . "</p>";
                         <h3>Test Client Creation Form</h3>
                     </div>
                     <div class="card-body">
-                        <form action="<?php echo '/testv1thinkhug/clients/store'; ?>" method="post">
+                        <form action="<?php echo url('clients/store'); ?>" method="post">
                             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                             
                             <div class="mb-3">

@@ -55,8 +55,8 @@ class AuthController extends Controller
             unset($_SESSION['old']);
             
             // Set session data
-            $_SESSION['user_id'] = $user->id;
-            $_SESSION['admin_name'] = $user->name;
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
             
             // Redirect to dashboard
             return $this->redirect(url(''));
@@ -69,7 +69,18 @@ class AuthController extends Controller
     public function logout()
     {
         // Clear session data
-        session_unset();
+        $_SESSION = array();
+        
+        // If it's desired to kill the session, also delete the session cookie
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+        
+        // Finally, destroy the session
         session_destroy();
         
         // Redirect to login page

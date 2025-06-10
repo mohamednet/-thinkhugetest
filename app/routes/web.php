@@ -18,6 +18,12 @@ $router->get('/logout', 'AuthController@logout');
 // Client routes
 $router->get('/clients', 'ClientController@index');
 $router->post('/clients', 'ClientController@store');
+
+// Client search route - must come before the {id} route
+$router->get('/clients/search', 'ClientController@search');
+
+// Client detail routes
+$router->get('/clients/{id}', 'ClientController@show');
 $router->post('/clients/{id}', 'ClientController@update');
 $router->post('/clients/{id}/delete', 'ClientController@delete');
 
