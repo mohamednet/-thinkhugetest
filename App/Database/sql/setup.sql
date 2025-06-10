@@ -5,10 +5,9 @@
 CREATE DATABASE IF NOT EXISTS finance_app;
 USE finance_app;
 
--- Create users table
-CREATE TABLE IF NOT EXISTS users (
+-- Create administrators table
+CREATE TABLE IF NOT EXISTS administrators (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -41,8 +40,8 @@ CREATE TABLE IF NOT EXISTS transactions (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Add initial admin user (password: admin123)
-INSERT INTO users (name, username, password) VALUES 
-('Admin User', 'admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
+INSERT INTO administrators (username, password) VALUES 
+('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
 
 -- Add some sample clients
 INSERT INTO clients (name, email, phone, address, notes) VALUES
