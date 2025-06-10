@@ -16,13 +16,13 @@ try {
     require_once APP_ROOT . '/config/env.php';
     
     // Load bootstrap file which includes autoloader
-    require_once APP_ROOT . '/app/core/bootstrap.php';
+    require_once APP_ROOT . '/App/Core/bootstrap.php';
     
     // Initialize the application using the singleton pattern
     $app = \App\Core\Application::getInstance();
     
     // Explicitly load routes
-    require_once APP_ROOT . '/app/routes/web.php';
+    require_once APP_ROOT . '/App/Routes/web.php';
     
     // Run the application
     $app->run();

@@ -48,7 +48,7 @@ $router->notFound(function() {
     // Render the 404 view with the layout
     $title = 'Page Not Found';
     ob_start();
-    include APP_ROOT . '/app/views/errors/404.php';
+    include APP_ROOT . '/App/Views/errors/404.php';
     $content = ob_get_clean();
     
     // Output the content

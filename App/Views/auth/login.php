@@ -34,5 +34,5 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-include APP_ROOT . '/app/views/layouts/main.php';
+include APP_ROOT . '/App/Views/layouts/main.php';
 ?>

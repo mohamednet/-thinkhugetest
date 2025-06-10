@@ -20,7 +20,7 @@ if (!function_exists('view')) {
         ob_start();
         
         // Include the view file
-        $viewPath = APP_ROOT . "/app/views/$view.php";
+        $viewPath = APP_ROOT . "/App/Views/$view.php";
         
         if (!file_exists($viewPath)) {
             throw new Exception("View $view not found");

@@ -2,14 +2,14 @@
 RewriteEngine On
 
 # Protect sensitive directories
-RewriteRule ^(app|config|resources) - [F,L]
+RewriteRule ^(App|config|resources) - [F,L]
 
 # Redirect everything else to public directory
 RewriteCond %{REQUEST_URI} !^/public/
 RewriteRule ^(.*)$ public/$1 [L,QSA]
 
 # Prevent direct access to files in other directories
-RewriteCond %{REQUEST_URI} ^/app/.*$ [OR]
+RewriteCond %{REQUEST_URI} ^/App/.*$ [OR]
 RewriteCond %{REQUEST_URI} ^/config/.*$ [OR]
 RewriteCond %{REQUEST_URI} ^/resources/.*$
 RewriteRule ^(.*)$ public/index.php [L]

@@ -92,10 +92,10 @@ ob_start();
 <?php endif; ?>
 
 <!-- Create Client Modal -->
-<?php include APP_ROOT . '/app/views/clients/partials/create_modal.php'; ?>
+<?php include APP_ROOT . '/App/Views/clients/partials/create_modal.php'; ?>
 
 <!-- Edit Client Modal -->
-<?php include APP_ROOT . '/app/views/clients/partials/edit_modal.php'; ?>
+<?php include APP_ROOT . '/App/Views/clients/partials/edit_modal.php'; ?>
 
 <!-- View Client Modal -->
 <div class="modal fade" id="viewClientModal" tabindex="-1" aria-labelledby="viewClientModalLabel" aria-hidden="true">
@@ -221,7 +221,7 @@ ob_start();
 </script>
 
 <!-- Delete Client Modal -->
-<?php include APP_ROOT . '/app/views/clients/partials/delete_modal.php'; ?>
+<?php include APP_ROOT . '/App/Views/clients/partials/delete_modal.php'; ?>
 
 <?php
 $content = ob_get_clean();

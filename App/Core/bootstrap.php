@@ -11,7 +11,7 @@ ini_set('display_errors', 1);
 spl_autoload_register(function ($class) {
     // Convert namespace to file path
     $prefix = 'App\\';
-    $base_dir = APP_ROOT . '/app/';
+    $base_dir = APP_ROOT . '/App/';
     
     // Check if class uses the prefix
     $len = strlen($prefix);
@@ -32,7 +32,7 @@ spl_autoload_register(function ($class) {
 });
 
 // Load helper functions
-require_once APP_ROOT . '/app/core/helpers.php';
+require_once APP_ROOT . '/App/Core/helpers.php';
 
 // Set default timezone
 date_default_timezone_set('UTC');

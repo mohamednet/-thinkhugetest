@@ -17,7 +17,7 @@ try {
     
     echo "<h2>Loading Bootstrap</h2>";
     // Load the bootstrap file
-    require_once APP_ROOT . '/app/core/bootstrap.php';
+    require_once APP_ROOT . '/App/Core/bootstrap.php';
     echo "<p style='color:green'>✓ Bootstrap loaded</p>";
     
     echo "<h2>Initializing Application</h2>";
@@ -34,7 +34,7 @@ try {
     echo "<h2>Loading Routes</h2>";
     try {
         // Load routes manually
-        require_once APP_ROOT . '/app/routes/web.php';
+        require_once APP_ROOT . '/App/Routes/web.php';
         echo "<p style='color:green'>✓ Routes loaded</p>";
     } catch (\Exception $e) {
         echo "<p style='color:red'>✗ Routes loading failed: " . $e->getMessage() . "</p>";
