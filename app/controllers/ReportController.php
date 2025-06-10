@@ -34,6 +34,7 @@ class ReportController extends Controller
         
         return $this->render('reports/index', [
             'title' => 'Financial Reports',
+            'active_page' => 'reports',
             'clients' => $clients
         ]);
     }
@@ -113,6 +114,7 @@ class ReportController extends Controller
             
             return $this->render('reports/results', [
                 'title' => 'Report Results',
+                'active_page' => 'reports',
                 'client' => $client,
                 'reportType' => $reportType,
                 'startDate' => $startDate,

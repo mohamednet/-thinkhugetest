@@ -28,13 +28,13 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= url('/') ?>">Dashboard</a>
+                        <a class="nav-link <?= ($active_page ?? '') === 'dashboard' ? 'active' : '' ?>" href="<?= url('/') ?>">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= url('clients') ?>">Clients</a>
+                        <a class="nav-link <?= ($active_page ?? '') === 'clients' ? 'active' : '' ?>" href="<?= url('clients') ?>">Clients</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= url('reports') ?>">Reports</a>
+                        <a class="nav-link <?= ($active_page ?? '') === 'reports' ? 'active' : '' ?>" href="<?= url('reports') ?>">Reports</a>
                     </li>
                 </ul>
                 <div class="d-flex">

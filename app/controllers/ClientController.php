@@ -34,6 +34,7 @@ class ClientController extends Controller
         
         return $this->render('clients/index', [
             'title' => 'Clients',
+            'active_page' => 'clients',
             'clients' => $clients,
             'search' => $search
         ]);
@@ -108,7 +109,7 @@ class ClientController extends Controller
         
         try {
             // Update client
-            $this->clientService->updateClient($data);
+            $this->clientService->updateClient($id, $data);
             
             flash('success', 'Client updated successfully');
             return $this->redirect(url('clients'));
@@ -140,6 +141,69 @@ class ClientController extends Controller
             flash('error', $e->getMessage());
             return $this->redirect(url('clients'));
         }
+    }
+    
+    /**
+     * Search clients via AJAX
+     * 
+     * @return string JSON response with search results
+     */
+    public function search()
+    {
+        // Debug log
+        error_log('Search endpoint called');
+        
+        // Require authentication
+        $this->requireAuth();
+        
+        // Set proper headers for AJAX response
+        header('Content-Type: application/json');
+        
+        try {
+            // Get search term
+            $search = $this->request->get('search');
+            error_log('Search term: ' . $search);
+            
+            // Get clients matching search term
+            $clients = $this->clientService->searchClients($search);
+            error_log('Found ' . count($clients) . ' clients');
+            
+            // Convert client objects to arrays for JSON serialization
+            $clientsArray = [];
+            foreach ($clients as $client) {
+                $clientsArray[] = [
+                    'id' => $client->id,
+                    'name' => $client->name,
+                    'email' => $client->email,
+                    'phone' => $client->phone,
+                    'address' => $client->address,
+                    'notes' => $client->notes
+                ];
+            }
+            
+            // Create response array
+            $response = [
+                'success' => true,
+                'clients' => $clientsArray
+            ];
+            
+            // Debug log
+            error_log('Response: ' . json_encode($response));
+            
+            // Return JSON response
+            echo json_encode($response);
+        } catch (\Exception $e) {
+            // Log the error
+            error_log('Search error: ' . $e->getMessage());
+            error_log('Stack trace: ' . $e->getTraceAsString());
+            
+            // Return error response
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+        exit;
     }
     
     public function show($id)

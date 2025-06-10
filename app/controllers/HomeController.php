@@ -39,6 +39,7 @@ class HomeController extends Controller
         
         return $this->render('home/dashboard', [
             'title' => 'Dashboard',
+            'active_page' => 'dashboard',
             'totalClients' => $totalClients,
             'recentClients' => $recentClients,
             'totalIncome' => $totalIncome,
