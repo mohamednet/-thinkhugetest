@@ -56,7 +56,7 @@ If you're not using XAMPP:
 ## Logging in
 
 Use these credentials for your first login:
-- Email: `admin@example.com`
+- Email: `admin`
 - Password: `admin123`
 
 Obviously change this password ASAP!
@@ -126,7 +126,3 @@ If you hit issues:
 - Login problems? Make sure the setup.sql script ran correctly
 
 Let me know if you run into anything else!
-
-## License
-
-[MIT License](LICENSE)
