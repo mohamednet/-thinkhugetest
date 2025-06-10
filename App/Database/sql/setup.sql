@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS transactions (
 
 -- Add initial admin user (password: admin123)
 INSERT INTO administrators (username, password) VALUES 
-('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
+('admin', '$2y$10$7mclDQzOR.1OTLPPkSyuGe8FXNn.e7ZP0.LXuLb3SMR8u5/LhiCBm'); -- Correct hash for admin123
 
 -- Add some sample clients
 INSERT INTO clients (name, email, phone, address, notes) VALUES
