@@ -8,17 +8,14 @@ class Request
         // Extract the path from the request URI
         $path = $_SERVER['REQUEST_URI'] ?? '/';
         
-        // Debug output
-        echo "<div style='background:#f0f8ff;padding:5px;margin:5px;border:1px solid #ccc;'>"; 
-        echo "<strong>Request Debug:</strong><br>"; 
-        echo "Original REQUEST_URI: {$_SERVER['REQUEST_URI']}<br>"; 
+        // Production mode - no debug output
         
         // Remove query string if present
         $position = strpos($path, '?');
         if ($position !== false) {
             $path = substr($path, 0, $position);
         }
-        echo "After query string removal: {$path}<br>"; 
+
         
         // First, normalize the path by removing both testv1thinkhug and public parts
         $projectRoot = '/testv1thinkhug';
@@ -27,13 +24,13 @@ class Request
         // Remove project root if present
         if (strpos($path, $projectRoot) === 0) {
             $path = substr($path, strlen($projectRoot));
-            echo "After project root removal: {$path}<br>"; 
+
         }
         
         // Remove public directory if present
         if (strpos($path, $publicDir) === 0) {
             $path = substr($path, strlen($publicDir));
-            echo "After public dir removal: {$path}<br>"; 
+
         }
         
         // Handle direct access to PHP files
@@ -44,7 +41,7 @@ class Request
             } else {
                 $path = '/';
             }
-            echo "After PHP file handling: {$path}<br>"; 
+
         }
         
         // Ensure path starts with a slash
@@ -55,8 +52,7 @@ class Request
         // Normalize multiple slashes to a single slash
         $path = preg_replace('#/+#', '/', $path);
         
-        echo "Final processed path: {$path}<br>"; 
-        echo "</div>";
+
         
         return $path;
     }

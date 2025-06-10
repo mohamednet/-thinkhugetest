@@ -69,20 +69,11 @@ class Router
         // Normalize the request path for consistent matching
         $path = $this->normalizePath($path);
         
-        // Add debugging to see what's happening
-        echo "<div style='background:#f8f9fa;padding:10px;margin:10px;border:1px solid #ddd;'>"; 
-        echo "<strong>Router Debug:</strong> Method: {$method}, Normalized Path: {$path}<br>";
-        echo "<strong>Routes registered:</strong><br>";
-        foreach ($this->routes[$method] as $route => $callback) {
-            echo "Route: {$route}<br>";
-        }
-        echo "</div>";
+        // Production mode - no debug output
         
         // Check if route exists (exact match)
         if (isset($this->routes[$method][$path])) {
-            echo "<div style='background:#e8f5e9;padding:5px;margin:5px;border:1px solid #4caf50;'>";
-            echo "<strong style='color:green'>EXACT MATCH FOUND!</strong> Path: {$path}<br>";
-            echo "</div>";
+            // Exact match found
             $callback = $this->routes[$method][$path];
             return $this->executeCallback($callback);
         }
@@ -93,26 +84,17 @@ class Router
             $pattern = preg_replace('/{([a-zA-Z0-9_]+)}/', '([^/]+)', $route);
             $pattern = "#^$pattern$#";
             
-            echo "<div style='background:#f8f9fa;padding:5px;margin:5px;border:1px solid #ddd;'>";
-            echo "Checking if path: <strong>{$path}</strong> matches pattern: <strong>{$pattern}</strong><br>";
+            // Check for dynamic route match
             
             if (preg_match($pattern, $path, $matches)) {
-                echo "<strong style='color:green'>DYNAMIC MATCH FOUND!</strong><br>";
-                echo "</div>";
+                // Dynamic match found
                 array_shift($matches); // Remove the first match (full string)
                 return $this->executeCallback($callback, $matches);
             }
             echo "</div>";
         }
         
-        // Route not found - try to find a similar route for debugging
-        echo "<div style='background:#ffebee;padding:10px;margin:10px;border:1px solid #f44336;'>"; 
-        echo "<strong>No route found for:</strong> {$path}<br>";
-        echo "<strong>Available routes:</strong><br>";
-        foreach ($this->routes[$method] as $route => $callback) {
-            echo "- {$route}<br>";
-        }
-        echo "</div>";
+        // Route not found
         
         // Route not found
         if ($this->notFoundCallback) {
