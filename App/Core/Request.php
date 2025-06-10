@@ -8,8 +8,6 @@ class Request
         // Extract the path from the request URI
         $path = $_SERVER['REQUEST_URI'] ?? '/';
         
-        // Production mode - no debug output
-        
         // Remove query string if present
         $position = strpos($path, '?');
         if ($position !== false) {
