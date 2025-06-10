@@ -52,10 +52,18 @@ class Response
     
     public function json($data)
     {
-        $this->setHeader('Content-Type', 'application/json');
-        $this->content = json_encode($data);
-        echo $this->content;
-        return $this;
+        // Clear any previous output
+        if (ob_get_length() > 0) {
+            ob_clean();
+        }
+        
+        // Set proper JSON headers
+        header('Content-Type: application/json');
+        header('Cache-Control: no-cache, must-revalidate');
+        
+        // Encode and output the JSON data
+        echo json_encode($data, JSON_PRETTY_PRINT);
+        exit; // Terminate execution to prevent any additional output
     }
     
     public function send()
