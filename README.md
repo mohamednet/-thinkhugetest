@@ -1,129 +1,93 @@
 # Client Management System
 
-A professional PHP MVC application for managing clients and their financial transactions. Built with a custom MVC framework and MySQL, this application allows administrators to track clients, record income and expenses, and generate financial reports.
+This is a custom PHP MVC app I built for managing clients and their financial transactions. I created it from scratch without any major frameworks - just vanilla PHP, MySQL, and some Bootstrap for the UI. It lets you manage clients, track income/expenses, and generate some basic financial reports.
 
-## Features
+## What it does
 
-- **Authentication System**: Secure login for administrators
-- **Client Management**: Create, view, update, and delete client records
-- **Transaction Management**: Record income and expenses for each client
-- **Financial Reporting**: Generate reports with date range filters
-- **API Access**: RESTful API endpoint for accessing client transactions
-- **Security**: Protection against XSS, CSRF, and SQL injection attacks
+- Login system for admins (nothing fancy but it's secure)
+- Add/edit/delete clients and their info
+- Record payments and expenses for each client
+- Run reports with date filters to see how you're doing
+- Simple API endpoint if you need to pull transaction data programmatically
+- All the usual security stuff (XSS protection, CSRF tokens, etc.)
 
-## Requirements
+## What you need
 
-- PHP 7.4 or higher
-- MySQL 5.7 or higher
-- Apache web server with mod_rewrite enabled
-- Composer (optional, for future dependency management)
+- PHP 7.4+
+- MySQL 5.7+
+- Apache with mod_rewrite
+- That's pretty much it!
 
-## Installation Guide
+## Setting it up
 
-### 1. Server Setup
+### Quick start with XAMPP
 
-#### Using XAMPP/WAMP/MAMP
+1. Get XAMPP running on your machine
+2. Drop these files in your htdocs folder (or a subfolder like `testv1thinkhug`)
+3. Create a database in phpMyAdmin
+4. Run the SQL script from `app/database/sql/setup.sql`
+5. Copy `.env.example` to `.env` and update your database settings
+6. Hit the URL in your browser and you're good to go!
 
-1. Install [XAMPP](https://www.apachefriends.org/), [WAMP](https://www.wampserver.com/), or [MAMP](https://www.mamp.info/)
-2. Clone or extract this repository to your htdocs/www folder:
+### Manual setup
+
+If you're not using XAMPP:
+
+1. Set up your vhost to point to the project root
+2. Make sure mod_rewrite is enabled (for the pretty URLs)
+3. Create your database and run the setup script:
    ```
-   git clone https://github.com/mohamednet/-thinkhugetest.git testv1thinkhug
+   mysql -u yourusername -p yourdb < app/database/sql/setup.sql
    ```
-   or place the files in a subdirectory like `htdocs/testv1thinkhug`
-
-#### Using a Custom Server
-
-1. Set up a virtual host pointing to the project's root directory
-2. Ensure the Apache `mod_rewrite` module is enabled
-3. Make sure PHP has PDO and PDO_MySQL extensions enabled
-
-### 2. Database Setup
-
-1. Create a new MySQL database for the application
-2. Import the database schema and initial data:
-   - Use the SQL script located at `app/database/sql/setup.sql`
-   - Via command line:
-     ```
-     mysql -u username -p database_name < app/database/sql/setup.sql
-     ```
-   - Or using phpMyAdmin:
-     - Open phpMyAdmin
-     - Select your database
-     - Go to the "Import" tab
-     - Upload and execute the `app/database/sql/setup.sql` file
-
-### 3. Configuration
-
-1. Copy the `.env.example` file to `.env`:
-   ```
-   cp .env.example .env
-   ```
-
-2. Edit the `.env` file with your database credentials and application settings:
+4. Sort out your `.env` file with the right settings:
    ```
    DB_HOST=localhost
    DB_PORT=3306
-   DB_DATABASE=your_database_name
-   DB_USERNAME=your_database_username
-   DB_PASSWORD=your_database_password
-   APP_URL=http://localhost/testv1thinkhug
+   DB_DATABASE=yourdb
+   DB_USERNAME=yourusername
+   DB_PASSWORD=yourpassword
+   APP_URL=http://localhost/testv1thinkhug  # or your vhost URL
+   ```
+5. You might need to fix permissions on the storage folder:
+   ```
+   chmod -R 755 storage
    ```
 
-### 4. Directory Permissions
+## Logging in
 
-Ensure the web server has write permissions to the `storage` directory:
-```
-chmod -R 755 storage
-```
+Use these credentials for your first login:
+- Email: `admin@example.com`
+- Password: `admin123`
 
-### 5. Access the Application
+Obviously change this password ASAP!
 
-1. Open your web browser and navigate to:
-   - If using XAMPP/WAMP/MAMP: `http://localhost/testv1thinkhug`
-   - If using a virtual host: Your configured domain
+## How it's built
 
-2. Login with the default administrator account:
-   - Username: `admin@example.com`
-   - Password: `admin123`
-
-3. **Important:** Change the default password after your first login for security.
-
-## Project Structure
+I went with a pretty standard MVC structure:
 
 ```
 app/
-├── controllers/       # Controllers for handling requests
-├── core/              # Core framework components
-├── database/          # Database setup and migrations
-│   └── sql/           # SQL setup scripts
-├── mappers/           # Data mappers for DB to Model conversion
-├── models/            # Domain models
-├── repositories/      # Data access layer
-│   └── interfaces/    # Repository interfaces
-├── routes/            # Route definitions
-├── services/          # Business logic layer
-└── views/             # View templates
-config/                # Configuration files
-public/                # Web root with assets
-storage/               # File storage
+├── controllers/     # Handle requests, talk to services
+├── core/            # Framework stuff - router, request handling, etc.
+├── database/        # DB connection and setup scripts
+├── models/          # Data models
+├── repositories/    # Database operations
+├── services/        # Business logic
+└── views/           # Templates and UI
+config/              # App config
+public/              # Web root
+storage/             # File storage (not really used much yet)
 ```
 
-## API Documentation
+## API stuff
 
-The application provides a RESTful API endpoint for accessing client transactions:
+There's a basic API endpoint for getting client transactions:
 
-### Get Client Transactions
+`GET /api/clients/{id}/transactions?start_date=2023-01-01&end_date=2023-12-31`
 
-**Endpoint:** `GET /api/clients/{id}/transactions`
+It returns JSON with transaction data. You need to be logged in to use it - it uses the same auth as the web interface.
 
-**Parameters:**
-- `start_date` (optional): Filter transactions from this date (YYYY-MM-DD)
-- `end_date` (optional): Filter transactions until this date (YYYY-MM-DD)
-
-**Authentication:**
-- Requires the same authentication as the web interface
-
-**Response Example:**
+Example response:
 ```json
 {
   "success": true,
@@ -134,49 +98,34 @@ The application provides a RESTful API endpoint for accessing client transaction
         "id": 5,
         "type": "income",
         "amount": 1500.00,
-        "formatted_amount": "$1,500.00",
         "description": "Monthly service fee",
-        "date": "2023-06-01",
-        "formatted_date": "Jun 1, 2023"
+        "date": "2023-06-01"
       }
     ],
     "balance": 1500.00,
-    "formatted_balance": "1,500.00",
     "count": 1
   }
 }
 ```
 
-## Security Features
+## Security notes
 
-- **Password Hashing**: Secure password storage using bcrypt
-- **CSRF Protection**: Cross-Site Request Forgery prevention on all forms
-- **SQL Injection Prevention**: PDO prepared statements for all database queries
-- **XSS Protection**: Output escaping with `htmlspecialchars()` throughout the application
-- **Authentication**: Session-based authentication with secure session handling
+I've implemented the usual security measures:
+- Passwords are hashed with bcrypt
+- Forms have CSRF tokens
+- All database queries use prepared statements
+- Output is escaped with htmlspecialchars()
+- Authentication checks on all sensitive routes
 
 ## Troubleshooting
 
-### URL Rewriting Issues
+If you hit issues:
 
-If you encounter 404 errors or routing problems:
+- 404 errors? Check your .htaccess and mod_rewrite setup
+- Can't connect to DB? Double-check your .env settings
+- Login problems? Make sure the setup.sql script ran correctly
 
-1. Ensure Apache's `mod_rewrite` module is enabled
-2. Check that `.htaccess` files are being processed (AllowOverride must be set to All)
-3. Verify the project is in the correct subdirectory as configured in your environment
-
-### Database Connection Issues
-
-1. Verify your database credentials in the `.env` file
-2. Ensure the MySQL server is running
-3. Check that the database has been created and the setup script has been executed
-
-### Login Issues
-
-If you cannot log in with the default credentials:
-
-1. Verify the database setup was completed successfully
-2. Check the `users` table to ensure the admin user exists
+Let me know if you run into anything else!
 
 ## License
 
