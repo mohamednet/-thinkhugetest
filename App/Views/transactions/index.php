@@ -96,7 +96,8 @@ ob_start();
                         <label for="amount" class="form-label">Amount *</label>
                         <div class="input-group">
                             <span class="input-group-text">$</span>
-                            <input type="number" class="form-control" id="amount" name="amount" step="0.01" min="0.01" value="<?= htmlspecialchars(old('amount', '')) ?>" required>
+                            <input type="number" class="form-control" id="amount" name="amount" step="0.01" min="0.01" max="99999999.99" value="<?= htmlspecialchars(old('amount', '')) ?>" required>
+                            <div class="form-text">Maximum amount: $99,999,999.99</div>
                         </div>
                     </div>
                     
@@ -199,7 +200,8 @@ ob_start();
                             <label for="amount<?= $transaction->id ?>" class="form-label">Amount *</label>
                             <div class="input-group">
                                 <span class="input-group-text">$</span>
-                                <input type="number" class="form-control" id="amount<?= $transaction->id ?>" name="amount" step="0.01" min="0.01" value="<?= htmlspecialchars($transaction->amount) ?>" required>
+                                <input type="number" class="form-control" id="amount<?= $transaction->id ?>" name="amount" step="0.01" min="0.01" max="99999999.99" value="<?= htmlspecialchars($transaction->amount) ?>" required>
+                            <div class="form-text">Maximum amount: $99,999,999.99</div>
                             </div>
                         </div>
                         

@@ -79,11 +79,19 @@ class TransactionController extends Controller
                 return $this->redirect(url('clients'));
             }
             
-            // Get form data
+            // Get form data and validate amount
+            $amount = $this->request->get('amount');
+            
+            // Check if amount exceeds database limit (DECIMAL(10,2) = max 99999999.99)
+            if (is_numeric($amount) && $amount > 99999999.99) {
+                flash('error', 'Amount exceeds maximum allowed value (99,999,999.99). Please enter a smaller amount.');
+                return $this->redirect(url('clients/' . $clientId . '/transactions'));
+            }
+            
             $data = [
                 'client_id' => $clientId,
                 'type' => $this->request->get('type'),
-                'amount' => $this->request->get('amount'),
+                'amount' => $amount,
                 'date' => $this->request->get('date'),
                 'description' => $this->request->get('description')
             ];
@@ -128,12 +136,20 @@ class TransactionController extends Controller
                 return $this->redirect(url('clients'));
             }
             
-            // Get form data
+            // Get form data and validate amount
+            $amount = $this->request->get('amount');
+            
+            // Check if amount exceeds database limit (DECIMAL(10,2) = max 99999999.99)
+            if (is_numeric($amount) && $amount > 99999999.99) {
+                flash('error', 'Amount exceeds maximum allowed value (99,999,999.99). Please enter a smaller amount.');
+                return $this->redirect(url('transactions/' . $id . '/edit'));
+            }
+            
             $data = [
                 'id' => $id,
                 'client_id' => $transaction->client_id,
                 'type' => $this->request->get('type'),
-                'amount' => $this->request->get('amount'),
+                'amount' => $amount,
                 'date' => $this->request->get('date'),
                 'description' => $this->request->get('description')
             ];
