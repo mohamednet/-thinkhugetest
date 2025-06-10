@@ -53,13 +53,14 @@ class ReportController extends Controller
         
         // Get form data
         $clientId = $this->request->get('client_id');
-        $reportType = $this->request->get('report_type');
+        $reportType = 'detailed'; // Fixed to detailed report type
+        $transactionType = $this->request->get('transaction_type', 'all');
         $startDate = $this->request->get('start_date');
         $endDate = $this->request->get('end_date');
         
-        // Validate report type
-        if (!in_array($reportType, ['detailed', 'grouped'])) {
-            flash('error', 'Invalid report type');
+        // Validate transaction type
+        if (!in_array($transactionType, ['all', 'income', 'expense'])) {
+            flash('error', 'Invalid transaction type');
             return $this->redirect(url('reports'));
         }
         
@@ -72,6 +73,13 @@ class ReportController extends Controller
             
             // Get transactions
             $transactions = $this->transactionService->getFilteredTransactions($clientId, $startDate, $endDate);
+            
+            // Filter transactions by type if needed
+            if ($transactionType !== 'all') {
+                $transactions = array_filter($transactions, function($transaction) use ($transactionType) {
+                    return $transaction->type === $transactionType;
+                });
+            }
             
             // Calculate totals
             $income = 0;
@@ -117,6 +125,7 @@ class ReportController extends Controller
                 'active_page' => 'reports',
                 'client' => $client,
                 'reportType' => $reportType,
+                'transactionType' => $transactionType,
                 'startDate' => $startDate,
                 'endDate' => $endDate,
                 'transactions' => $transactions,

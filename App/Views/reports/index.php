@@ -24,8 +24,14 @@ ob_start();
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <!-- Report type is fixed to "detailed" -->
-                <input type="hidden" name="report_type" value="detailed">
+                <div class="col-md-6">
+                    <label for="transaction_type" class="form-label">Report Type</label>
+                    <select class="form-select" id="transaction_type" name="transaction_type">
+                        <option value="all">All Transactions</option>
+                        <option value="income">Income Only</option>
+                        <option value="expense">Expenses Only</option>
+                    </select>
+                </div>
             </div>
             
             <div class="row mb-4">
