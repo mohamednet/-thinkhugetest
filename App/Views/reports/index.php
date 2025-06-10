@@ -24,13 +24,8 @@ ob_start();
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="col-md-6">
-                    <label for="report_type" class="form-label">Report Type</label>
-                    <select class="form-select" id="report_type" name="report_type">
-                        <option value="detailed">Detailed (All Transactions)</option>
-                        <option value="grouped">Grouped By Client</option>
-                    </select>
-                </div>
+                <!-- Report type is fixed to "detailed" -->
+                <input type="hidden" name="report_type" value="detailed">
             </div>
             
             <div class="row mb-4">
