@@ -14,5 +14,5 @@ return [
     'app_version' => '1.0.0',
     
     // Debug mode
-    'debug' => true,
+    'debug' => false,
 ];
