@@ -42,5 +42,16 @@ $router->get('/api/clients/{id}/transactions', 'ApiController@getClientTransacti
 
 // 404 handler
 $router->notFound(function() {
-    return view('errors/404');
+    // Set the HTTP status code to 404
+    http_response_code(404);
+    
+    // Render the 404 view with the layout
+    $title = 'Page Not Found';
+    ob_start();
+    include APP_ROOT . '/app/views/errors/404.php';
+    $content = ob_get_clean();
+    
+    // Output the content
+    echo $content;
+    exit;
 });
