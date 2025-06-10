@@ -134,10 +134,7 @@ ob_start();
                         <td><?= $transaction->getFormattedDate() ?></td>
                         <?php if (!$client): ?>
                         <td>
-                            <?php 
-                            $transactionClient = $transaction->client ?? null;
-                            echo $transactionClient ? htmlspecialchars($transactionClient->name) : 'Unknown';
-                            ?>
+                            <?= htmlspecialchars($transaction->client_name ?? 'Unknown') ?>
                         </td>
                         <?php endif; ?>
                         <td>

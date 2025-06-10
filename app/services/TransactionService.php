@@ -44,34 +44,45 @@ class TransactionService
     public function getFilteredTransactions($clientId = null, $startDate = null, $endDate = null)
     {
         // Build SQL query and parameters based on filters
-        $sql = "SELECT * FROM transactions WHERE 1=1";
+        $sql = "SELECT t.*, c.name as client_name FROM transactions t 
+               LEFT JOIN clients c ON t.client_id = c.id 
+               WHERE 1=1";
         $params = [];
         
         // Filter by client ID if provided
         if ($clientId) {
-            $sql .= " AND client_id = ?";
+            $sql .= " AND t.client_id = ?";
             $params[] = $clientId;
         }
         
         // Filter by date range if provided
         if ($startDate && $endDate) {
-            $sql .= " AND date BETWEEN ? AND ?";
+            $sql .= " AND t.date BETWEEN ? AND ?";
             $params[] = $startDate;
             $params[] = $endDate;
         } else if ($startDate) {
-            $sql .= " AND date >= ?";
+            $sql .= " AND t.date >= ?";
             $params[] = $startDate;
         } else if ($endDate) {
-            $sql .= " AND date <= ?";
+            $sql .= " AND t.date <= ?";
             $params[] = $endDate;
         }
         
         // Order by date descending
-        $sql .= " ORDER BY date DESC";
+        $sql .= " ORDER BY t.date DESC";
         
         // Execute query and map results to Transaction objects
         $rows = $this->transactionRepository->getDb()->fetchAll($sql, $params);
-        return array_map([$this->transactionRepository->getMapper(), 'toModel'], $rows);
+        $transactions = array_map([$this->transactionRepository->getMapper(), 'toModel'], $rows);
+        
+        // Make sure client_name is set on each transaction object
+        foreach ($transactions as $transaction) {
+            if (!isset($transaction->client_name) || empty($transaction->client_name)) {
+                $transaction->client_name = 'Unknown';
+            }
+        }
+        
+        return $transactions;
     }
     
     public function getRecentTransactions($limit = 5)
