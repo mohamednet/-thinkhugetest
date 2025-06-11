@@ -5,7 +5,6 @@ class Request
 {
     public function getPath()
     {
-        // Extract the path from the request URI
         $path = $_SERVER['REQUEST_URI'] ?? '/';
         
         // Remove query string if present
@@ -19,13 +18,11 @@ class Request
         $projectRoot = '/testv1thinkhug';
         $publicDir = '/public';
         
-        // Remove project root if present
         if (strpos($path, $projectRoot) === 0) {
             $path = substr($path, strlen($projectRoot));
 
         }
         
-        // Remove public directory if present
         if (strpos($path, $publicDir) === 0) {
             $path = substr($path, strlen($publicDir));
 
@@ -42,12 +39,10 @@ class Request
 
         }
         
-        // Ensure path starts with a slash
         if (empty($path) || $path[0] !== '/') {
             $path = '/' . $path;
         }
         
-        // Normalize multiple slashes to a single slash
         $path = preg_replace('#/+#', '/', $path);
         
 

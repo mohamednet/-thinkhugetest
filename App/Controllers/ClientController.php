@@ -19,13 +19,10 @@ class ClientController extends Controller
     
     public function index()
     {
-        // Require authentication
         $this->requireAuth();
         
-        // Get search term if provided
         $search = $this->request->get('search');
         
-        // Get clients
         if ($search) {
             $clients = $this->clientService->searchClients($search);
         } else {
@@ -46,17 +43,14 @@ class ClientController extends Controller
     
     public function store()
     {
-        // Require authentication
         $this->requireAuth();
         
-        // Validate CSRF token
         $token = $this->request->get('csrf_token');
         if (!verify_csrf_token($token)) {
             flash('error', 'Invalid CSRF token');
             return $this->redirect(url('clients'));
         }
         
-        // Get form data
         $data = [
             'name' => $this->request->get('name'),
             'email' => $this->request->get('email'),
@@ -65,14 +59,11 @@ class ClientController extends Controller
             'notes' => $this->request->get('notes')
         ];
         
-        // Store form data for repopulation on error
         $_SESSION['old'] = $data;
         
         try {
-            // Create client
             $client = $this->clientService->createClient($data);
             
-            // Clear old input
             unset($_SESSION['old']);
             
             flash('success', 'Client created successfully');
@@ -87,17 +78,14 @@ class ClientController extends Controller
     
     public function update($id)
     {
-        // Require authentication
         $this->requireAuth();
         
-        // Validate CSRF token
         $token = $this->request->get('csrf_token');
         if (!verify_csrf_token($token)) {
             flash('error', 'Invalid CSRF token');
             return $this->redirect(url('clients'));
         }
         
-        // Get form data
         $data = [
             'id' => $id,
             'name' => $this->request->get('name'),
@@ -108,7 +96,6 @@ class ClientController extends Controller
         ];
         
         try {
-            // Update client
             $this->clientService->updateClient($id, $data);
             
             flash('success', 'Client updated successfully');
@@ -121,10 +108,8 @@ class ClientController extends Controller
     
     public function delete($id)
     {
-        // Require authentication
         $this->requireAuth();
         
-        // Validate CSRF token
         $token = $this->request->get('csrf_token');
         if (!verify_csrf_token($token)) {
             flash('error', 'Invalid CSRF token');
@@ -132,7 +117,6 @@ class ClientController extends Controller
         }
         
         try {
-            // Delete client
             $this->clientService->deleteClient($id);
             
             flash('success', 'Client deleted successfully');
@@ -150,25 +134,17 @@ class ClientController extends Controller
      */
     public function search()
     {
-        // Debug log
-        error_log('Search endpoint called');
+
         
-        // Require authentication
         $this->requireAuth();
         
-        // Set proper headers for AJAX response
         header('Content-Type: application/json');
         
         try {
-            // Get search term
             $search = $this->request->get('search');
-            error_log('Search term: ' . $search);
             
-            // Get clients matching search term
             $clients = $this->clientService->searchClients($search);
-            error_log('Found ' . count($clients) . ' clients');
             
-            // Convert client objects to arrays for JSON serialization
             $clientsArray = [];
             foreach ($clients as $client) {
                 $clientsArray[] = [
@@ -181,23 +157,17 @@ class ClientController extends Controller
                 ];
             }
             
-            // Create response array
             $response = [
                 'success' => true,
                 'clients' => $clientsArray
             ];
             
-            // Debug log
-            error_log('Response: ' . json_encode($response));
+
             
-            // Return JSON response
             echo json_encode($response);
         } catch (\Exception $e) {
-            // Log the error
-            error_log('Search error: ' . $e->getMessage());
-            error_log('Stack trace: ' . $e->getTraceAsString());
+
             
-            // Return error response
             echo json_encode([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -208,11 +178,9 @@ class ClientController extends Controller
     
     public function show($id)
     {
-        // Require authentication
         $this->requireAuth();
         
         try {
-            // Get client
             $client = $this->clientService->getClientById($id);
             
             return $this->render('clients/show', [

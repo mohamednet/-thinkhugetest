@@ -71,6 +71,7 @@ app/
 ├── core/            # Framework stuff - router, request handling, etc.
 ├── database/        # DB connection and setup scripts
 ├── models/          # Data models
+├── mappers/         # Data mappers
 ├── repositories/    # Database operations
 ├── services/        # Business logic
 └── views/           # Templates and UI

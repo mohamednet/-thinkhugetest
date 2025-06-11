@@ -26,11 +26,9 @@ class TransactionController extends Controller
     
     public function index($clientId)
     {
-        // Require authentication
         $this->requireAuth();
         
         try {
-            // Get client
             $client = $this->clientService->getClientById($clientId);
             
             if (!$client) {
@@ -38,10 +36,8 @@ class TransactionController extends Controller
                 return $this->redirect(url('clients'));
             }
             
-            // Get transactions
             $transactions = $this->transactionService->getClientTransactions($clientId);
             
-            // Get client balance
             $balance = $this->transactionService->getClientBalance($clientId);
             
             return $this->render('transactions/index', [
@@ -60,10 +56,8 @@ class TransactionController extends Controller
     
     public function store($clientId)
     {
-        // Require authentication
         $this->requireAuth();
         
-        // Validate CSRF token
         $token = $this->request->get('csrf_token');
         if (!verify_csrf_token($token)) {
             flash('error', 'Invalid CSRF token');
@@ -71,7 +65,6 @@ class TransactionController extends Controller
         }
         
         try {
-            // Get client
             $client = $this->clientService->getClientById($clientId);
             
             if (!$client) {
@@ -96,13 +89,10 @@ class TransactionController extends Controller
                 'description' => $this->request->get('description')
             ];
             
-            // Store form data for repopulation on error
             $_SESSION['old'] = $data;
             
-            // Create transaction
             $transaction = $this->transactionService->createTransaction($data);
             
-            // Clear old input
             unset($_SESSION['old']);
             
             flash('success', 'Transaction added successfully');
@@ -117,10 +107,8 @@ class TransactionController extends Controller
     
     public function update($id)
     {
-        // Require authentication
         $this->requireAuth();
         
-        // Validate CSRF token
         $token = $this->request->get('csrf_token');
         if (!verify_csrf_token($token)) {
             flash('error', 'Invalid CSRF token');
@@ -128,7 +116,6 @@ class TransactionController extends Controller
         }
         
         try {
-            // Get transaction
             $transaction = $this->transactionService->getTransactionById($id);
             
             if (!$transaction) {
@@ -154,7 +141,6 @@ class TransactionController extends Controller
                 'description' => $this->request->get('description')
             ];
             
-            // Update transaction
             $this->transactionService->updateTransaction($id, $data);
             
             flash('success', 'Transaction updated successfully');
@@ -167,10 +153,8 @@ class TransactionController extends Controller
     
     public function delete($id)
     {
-        // Require authentication
         $this->requireAuth();
         
-        // Validate CSRF token
         $token = $this->request->get('csrf_token');
         if (!verify_csrf_token($token)) {
             flash('error', 'Invalid CSRF token');
@@ -178,7 +162,6 @@ class TransactionController extends Controller
         }
         
         try {
-            // Get transaction
             $transaction = $this->transactionService->getTransactionById($id);
             
             if (!$transaction) {
@@ -188,7 +171,6 @@ class TransactionController extends Controller
             
             $clientId = $transaction->client_id;
             
-            // Delete transaction
             $this->transactionService->deleteTransaction($id);
             
             flash('success', 'Transaction deleted successfully');

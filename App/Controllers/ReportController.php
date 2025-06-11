@@ -26,10 +26,8 @@ class ReportController extends Controller
     
     public function index()
     {
-        // Require authentication
         $this->requireAuth();
         
-        // Get all clients for the dropdown
         $clients = $this->clientService->getAllClients();
         
         return $this->render('reports/index', [
@@ -41,47 +39,39 @@ class ReportController extends Controller
     
     public function generate()
     {
-        // Require authentication
         $this->requireAuth();
         
-        // Validate CSRF token
         $token = $this->request->get('csrf_token');
         if (!verify_csrf_token($token)) {
             flash('error', 'Invalid CSRF token');
             return $this->redirect(url('reports'));
         }
         
-        // Get form data
         $clientId = $this->request->get('client_id');
         $reportType = 'detailed'; // Fixed to detailed report type
         $transactionType = $this->request->get('transaction_type', 'all');
         $startDate = $this->request->get('start_date');
         $endDate = $this->request->get('end_date');
         
-        // Validate transaction type
         if (!in_array($transactionType, ['all', 'income', 'expense'])) {
             flash('error', 'Invalid transaction type');
             return $this->redirect(url('reports'));
         }
         
         try {
-            // Get client if specified
             $client = null;
             if ($clientId) {
                 $client = $this->clientService->getClientById($clientId);
             }
             
-            // Get transactions
             $transactions = $this->transactionService->getFilteredTransactions($clientId, $startDate, $endDate);
             
-            // Filter transactions by type if needed
             if ($transactionType !== 'all') {
                 $transactions = array_filter($transactions, function($transaction) use ($transactionType) {
                     return $transaction->type === $transactionType;
                 });
             }
             
-            // Calculate totals
             $income = 0;
             $expenses = 0;
             
@@ -95,7 +85,6 @@ class ReportController extends Controller
             
             $balance = $income - $expenses;
             
-            // Group transactions by client if needed
             $groupedTransactions = [];
             if ($reportType === 'grouped' && !$clientId) {
                 foreach ($transactions as $transaction) {
